@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination } from 'swiper/modules';
 import { onboardingSlides as slides } from '@/lib/constants';
 import { cn } from '@/lib/utils';
+import type { PropsWithChildren } from 'react';
 
 const Aside = () => {
   const pathname = useLocation({
@@ -58,12 +59,10 @@ const Aside = () => {
             >
               {slides.map(({ id, heading, text }) => (
                 <SwiperSlide key={id}>
-                  <h1 className="mb-[1.12rem] font-bold clamp-[text,xl,3xl]">
+                  <h1 className="mb-[1.12rem] font-bold fl-text-xl/3xl">
                     {heading}
                   </h1>
-                  <p className="mx-auto max-w-115 clamp-[text,base,lg]">
-                    {text}
-                  </p>
+                  <p className="mx-auto max-w-115 fl-text-base/lg">{text}</p>
                 </SwiperSlide>
               ))}
             </Swiper>
@@ -77,24 +76,25 @@ const Aside = () => {
 const MainOnboardingLayout = ({
   className,
   showLogoOnDesktop = true,
-}: {
+  children,
+}: PropsWithChildren<{
   className?: string;
   showLogoOnDesktop?: boolean;
-}) => (
+}>) => (
   <section
     className={cn(
-      'flex flex-col justify-center items-center w-full relative grow clamp-[pt,16,24] pb-16',
+      'flex flex-col justify-center items-center w-full relative grow fl-pt-16/24 pb-16',
       className,
     )}
   >
     <Logo
       className={cn(
-        'w-32.5 text-primary absolute clamp-[top,5,12] left-1/2 -translate-x-1/2',
+        'w-32.5 text-primary absolute fl-top-5/12 left-1/2 -translate-x-1/2',
         !showLogoOnDesktop && 'sm:hidden',
       )}
     />
     <div className="mx-auto w-full max-w-[27.63rem] text-center -mt-8">
-      <Outlet />
+      {children ?? <Outlet />}
     </div>
 
     <p className="text-[0.625rem] text-grey-400 text-center absolute bottom-4 inset-x-0">

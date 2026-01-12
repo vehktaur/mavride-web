@@ -1,18 +1,18 @@
-import { cn, getBase64ForUpload } from '@/lib/utils'
-import { Upload, type UploadFile, type UploadProps } from 'antd'
-import ImgCrop from 'antd-img-crop'
-import { useState } from 'react'
-import { Controller, type ControllerProps } from 'react-hook-form'
-import AntdImage from '../antd/image'
-import { CameraIcon } from '@/assets/icons'
+import { cn, getBase64ForUpload } from '@/lib/utils';
+import { Upload, type UploadFile, type UploadProps } from 'antd';
+import ImgCrop from 'antd-img-crop';
+import { useState } from 'react';
+import { Controller, type ControllerProps } from 'react-hook-form';
+import AntdImage from '../antd/image';
+import { CameraIcon } from '@/assets/icons';
 // Props for the component
 interface Props {
-  name: string
-  label?: string
-  disabled?: boolean
-  className?: string
-  rules?: ControllerProps['rules']
-  aspect?: number // e.g., 1 for square, 16/9 for widescreen
+  name: string;
+  label?: string;
+  disabled?: boolean;
+  className?: string;
+  rules?: ControllerProps['rules'];
+  aspect?: number; // e.g., 1 for square, 16/9 for widescreen
 }
 
 const PictureUpload = ({ name, rules, className }: Props) => {
@@ -22,7 +22,7 @@ const PictureUpload = ({ name, rules, className }: Props) => {
       rules={rules}
       render={({ field: { value, onChange: _onChange } }) => {
         const defaultValue =
-          value instanceof File ? URL.createObjectURL(value) : null
+          value instanceof File ? URL.createObjectURL(value) : null;
 
         const [fileList, setFileList] = useState<UploadFile[]>(() =>
           defaultValue
@@ -36,24 +36,24 @@ const PictureUpload = ({ name, rules, className }: Props) => {
                 },
               ]
             : [],
-        )
-        const [previewOpen, setPreviewOpen] = useState(false)
-        const [previewImage, setPreviewImage] = useState('')
+        );
+        const [previewOpen, setPreviewOpen] = useState(false);
+        const [previewImage, setPreviewImage] = useState('');
 
         const onChange: UploadProps['onChange'] = ({ fileList }) => {
-          setFileList(fileList)
-          const file = fileList[0]?.originFileObj
-          _onChange(file ? [file] : null)
-        }
+          setFileList(fileList);
+          const file = fileList[0]?.originFileObj;
+          _onChange(file ? [file] : null);
+        };
 
         const handlePreview = async (file: UploadFile) => {
           if (!file.url && !file.preview && file.originFileObj) {
-            file.preview = await getBase64ForUpload(file.originFileObj)
+            file.preview = await getBase64ForUpload(file.originFileObj);
           }
 
-          setPreviewImage(file.url || (file.preview as string))
-          setPreviewOpen(true)
-        }
+          setPreviewImage(file.url || (file.preview as string));
+          setPreviewOpen(true);
+        };
         return (
           <div className={cn('size-25 overflow-clip relative', className)}>
             <ImgCrop quality={1} modalTitle="Crop Image">
@@ -75,7 +75,7 @@ const PictureUpload = ({ name, rules, className }: Props) => {
                 }}
                 maxCount={1}
                 customRequest={({ onSuccess }) => {
-                  onSuccess?.('ok')
+                  onSuccess?.('ok');
                 }}
               >
                 {/* Placeholder user image */}
@@ -87,8 +87,8 @@ const PictureUpload = ({ name, rules, className }: Props) => {
                   />
                 )}
 
-                <span className="absolute bottom-0 right-0 rounded-full bg-white-light grid place-items-center clamp-[size,6,8]  text-primary-300">
-                  <CameraIcon className="clamp-[size,4,5]" />
+                <span className="absolute bottom-0 right-0 rounded-full bg-white-light grid place-items-center fl-size-6/8  text-primary-300">
+                  <CameraIcon className="fl-size-4/5" />
                 </span>
               </Upload>
             </ImgCrop>
@@ -106,10 +106,10 @@ const PictureUpload = ({ name, rules, className }: Props) => {
               />
             )}
           </div>
-        )
+        );
       }}
     />
-  )
-}
+  );
+};
 
-export default PictureUpload
+export default PictureUpload;

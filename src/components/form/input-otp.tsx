@@ -1,16 +1,17 @@
-import * as React from 'react'
-import { OTPInput, OTPInputContext } from 'input-otp'
-import { MinusIcon } from 'lucide-react'
+import * as React from 'react';
+import { OTPInput, OTPInputContext } from 'input-otp';
+import { MinusIcon } from 'lucide-react';
 
-import { cn } from '@/lib/utils'
-import { Controller } from 'react-hook-form'
+import { cn } from '@/lib/utils';
+import { Controller } from 'react-hook-form';
+import FormErrorMessage from './error-message';
 
 function InputOTP({
   className,
   containerClassName,
   ...props
 }: React.ComponentProps<typeof OTPInput> & {
-  containerClassName?: string
+  containerClassName?: string;
 }) {
   return (
     <OTPInput
@@ -22,7 +23,7 @@ function InputOTP({
       className={cn('disabled:cursor-not-allowed', className)}
       {...props}
     />
-  )
+  );
 }
 
 function InputOTPGroup({ className, ...props }: React.ComponentProps<'div'>) {
@@ -32,7 +33,7 @@ function InputOTPGroup({ className, ...props }: React.ComponentProps<'div'>) {
       className={cn('flex items-center gap-4 justify-center w-full', className)}
       {...props}
     />
-  )
+  );
 }
 
 function InputOTPSlot({
@@ -40,17 +41,18 @@ function InputOTPSlot({
   className,
   ...props
 }: React.ComponentProps<'div'> & {
-  index: number
+  index: number;
 }) {
-  const inputOTPContext = React.useContext(OTPInputContext)
-  const { char, hasFakeCaret, isActive } = inputOTPContext?.slots[index] ?? {}
+  const inputOTPContext = React.useContext(OTPInputContext);
+  const { char, hasFakeCaret, isActive } = inputOTPContext?.slots[index] ?? {};
 
   return (
     <div
       data-slot="input-otp-slot"
       data-active={isActive}
       className={cn(
-        'data-[active=true]:ring-primary aria-valid:bg-red-500 dark:data-[active=true]:aria-invalid:ring-destructive/40 aria-invalid:ring-destructive data-[active=true]:aria-invalid:ring-destructive dark:bg-input/30 relative flex size-16 font-medium clamp-[text,base,lg] items-center justify-center bg-grey-100 transition-all outline-none rounded-mxl ring-primary data-[active=true]:z-10 data-[active=true]:ring-1 ',
+        'data-active:ring-primary dark:data-[active=true]:aria-invalid:ring-destructive/40 aria-invalid:ring-destructive data-[active=true]:aria-invalid:ring-destructive dark:bg-input/30 relative flex size-16 font-medium fl-text-base/lg items-center justify-center bg-grey-100 transition-all outline-none rounded-mxl ring-primary data-[active=true]:z-10 data-[active=true]:ring-1',
+        'data-error:ring-error-red',
         className,
         Boolean(char) && 'ring-1',
       )}
@@ -63,7 +65,7 @@ function InputOTPSlot({
         </div>
       )}
     </div>
-  )
+  );
 }
 
 function InputOTPSeparator({ ...props }: React.ComponentProps<'div'>) {
@@ -71,7 +73,7 @@ function InputOTPSeparator({ ...props }: React.ComponentProps<'div'>) {
     <div data-slot="input-otp-separator" role="separator" {...props}>
       <MinusIcon />
     </div>
-  )
+  );
 }
 
 function AppInputOtp({
@@ -80,15 +82,15 @@ function AppInputOtp({
   length,
   disabled,
 }: {
-  label?: React.ReactNode
-  name?: string
-  length: number
-  disabled?: boolean
+  label?: React.ReactNode;
+  name?: string;
+  length: number;
+  disabled?: boolean;
 }) {
   return (
     <Controller
       name={name}
-      render={({ field }) => (
+      render={({ field, fieldState: { error } }) => (
         <div>
           {label && (
             <label htmlFor="otp" className="label">
@@ -98,14 +100,26 @@ function AppInputOtp({
           <InputOTP maxLength={length} {...field} disabled={disabled}>
             <InputOTPGroup>
               {Array.from({ length }).map((_, index) => (
-                <InputOTPSlot key={index} index={index} />
+                <InputOTPSlot
+                  key={index}
+                  index={index}
+                  data-error={Boolean(error?.message)}
+                />
               ))}
             </InputOTPGroup>
           </InputOTP>
+
+          <FormErrorMessage name={name} id={`${name}-error`} />
         </div>
       )}
     />
-  )
+  );
 }
 
-export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator, AppInputOtp }
+export {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+  InputOTPSeparator,
+  AppInputOtp,
+};

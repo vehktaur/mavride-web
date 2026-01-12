@@ -1,5 +1,6 @@
-import { LuEye, LuArrowLeft } from 'react-icons/lu'
+import { LuEye, LuArrowLeft, LuArrowUpToLine } from 'react-icons/lu';
+import { HiOutlineTrash } from 'react-icons/hi';
 
-export { LuEye, LuArrowLeft }
+export { LuEye, LuArrowLeft, LuArrowUpToLine, HiOutlineTrash };
 
-export * from './local-icons'
+export * from './local-icons';

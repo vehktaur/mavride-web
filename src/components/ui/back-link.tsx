@@ -1,17 +1,24 @@
-import { Link } from '@tanstack/react-router'
-import { cn } from '../../lib/utils'
-import { LuArrowLeft } from '@/assets/icons'
+import { Link } from '@tanstack/react-router';
+import { cn } from '../../lib/utils';
+import { LuArrowLeft } from '@/assets/icons';
 
 interface BackLinkProps extends React.ComponentProps<typeof Link> {
-  text?: string
+  classNames?: {
+    root?: string;
+    icon?: string;
+  };
+  text?: string;
 }
 
-const BackLink = ({ className, text = 'Back', ...props }: BackLinkProps) => {
+const BackLink = ({ classNames, text = 'Back', ...props }: BackLinkProps) => {
   return (
-    <Link className={cn('flex items-center gap-2', className)} {...props}>
-      <LuArrowLeft className="w-4" />
+    <Link
+      className={cn('flex items-center gap-2', classNames?.root)}
+      {...props}
+    >
+      <LuArrowLeft className={cn('fl-size-5/6', classNames?.icon)} />
       {text}
     </Link>
-  )
-}
-export default BackLink
+  );
+};
+export default BackLink;

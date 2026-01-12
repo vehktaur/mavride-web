@@ -1,7 +1,7 @@
 @layer theme, base, antd, components, utilities;
 
 @import 'tailwindcss';
-@plugin "tailwind-clamp";
+@plugin "fluid-tailwindcss";
 @import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
@@ -118,7 +118,11 @@
   --font-inter: 'Inter', sans-serif;
 
   /* Custom colors */
+
+  --color-mavride-black: #0e0e0e;
+
   --color-mavride-blue: #0a1ed9;
+  --color-mavride-green: #00a906;
   --color-mavride-violet: #26203b;
   --color-error-red: #f32121;
   --color-error-100: #e45270;
@@ -130,7 +134,6 @@
 
   --color-white-light: #fdfdfd;
 
-  /* Grey scale */
   --color-grey-50: #fefefe;
   --color-grey-100: #efefef;
   --color-grey-200: #b0b0b0;
@@ -140,14 +143,11 @@
   --color-grey-600: #8c8c8c;
 
   --radius-mxl: 0.625rem;
-
-  /* Custom background images */
-  --background-image-signupBg: url('./src/assets/bg_desktop.png');
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border outline-ring/50 placeholder:text-grey-200;
   }
   body {
     @apply bg-background text-foreground font-outfit;
@@ -164,7 +164,7 @@
   }
 
   .onboarding-heading {
-    @apply font-medium text-mavride-violet clamp-[text,xl,3xl];
+    @apply font-medium text-mavride-violet fl-text-xl/3xl;
   }
 }
 

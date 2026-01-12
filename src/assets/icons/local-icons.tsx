@@ -1,4 +1,6 @@
-import type { SVGProps } from '@/types'
+import type { SVGProps } from '@/types';
+import { useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
 
 export const CameraIcon = (props: SVGProps) => (
   <svg
@@ -30,4 +32,95 @@ export const CameraIcon = (props: SVGProps) => (
       fill="currentColor"
     />
   </svg>
-)
+);
+
+export const FileIcon = (props: SVGProps) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="39"
+    height="39"
+    viewBox="0 0 39 39"
+    fill="none"
+    {...props}
+  >
+    <path
+      d="M22.5 20.75C22.5 20.5511 22.421 20.3603 22.2803 20.2197C22.1397 20.079 21.9489 20 21.75 20H15.75C15.5511 20 15.3603 20.079 15.2197 20.2197C15.079 20.3603 15 20.5511 15 20.75C15 20.9489 15.079 21.1397 15.2197 21.2803C15.3603 21.421 15.5511 21.5 15.75 21.5H21.75C21.9489 21.5 22.1397 21.421 22.2803 21.2803C22.421 21.1397 22.5 20.9489 22.5 20.75ZM22.5 24.75C22.5 24.5511 22.421 24.3603 22.2803 24.2197C22.1397 24.079 21.9489 24 21.75 24H15.75C15.5511 24 15.3603 24.079 15.2197 24.2197C15.079 24.3603 15 24.5511 15 24.75C15 24.9489 15.079 25.1397 15.2197 25.2803C15.3603 25.421 15.5511 25.5 15.75 25.5H21.75C21.9489 25.5 22.1397 25.421 22.2803 25.2803C22.421 25.1397 22.5 24.9489 22.5 24.75Z"
+      fill="currentColor"
+    />
+    <path
+      fill-rule="evenodd"
+      clip-rule="evenodd"
+      d="M13.75 10C13.0207 10 12.3212 10.2897 11.8055 10.8055C11.2897 11.3212 11 12.0207 11 12.75V26.75C11 27.4793 11.2897 28.1788 11.8055 28.6945C12.3212 29.2103 13.0207 29.5 13.75 29.5H23.75C24.4793 29.5 25.1788 29.2103 25.6945 28.6945C26.2103 28.1788 26.5 27.4793 26.5 26.75V15.718C26.5 15.337 26.376 14.967 26.146 14.663L23.148 10.695C22.9849 10.4791 22.7739 10.304 22.5317 10.1834C22.2895 10.0628 22.0226 10 21.752 10H13.75ZM12.5 12.75C12.5 12.06 13.06 11.5 13.75 11.5H21V15.897C21 16.311 21.336 16.647 21.75 16.647H25V26.75C25 27.44 24.44 28 23.75 28H13.75C13.06 28 12.5 27.44 12.5 26.75V12.75Z"
+      fill="currentColor"
+    />
+  </svg>
+);
+
+export const SuccessIcon = ({
+  animated,
+  ...props
+}: SVGProps & { animated?: boolean }) => {
+  const circleRef = useRef(null);
+  const lineRef = useRef(null);
+
+  useEffect(() => {
+    const animate = () => {
+      gsap.fromTo(
+        circleRef.current,
+        {
+          strokeDasharray: 661,
+          strokeDashoffset: 551,
+        },
+        {
+          strokeDashoffset: 0,
+          duration: 1.2,
+          ease: 'power2.inOut',
+        },
+      );
+
+      gsap.fromTo(
+        lineRef.current,
+        {
+          strokeDasharray: 138,
+          strokeDashoffset: 138,
+        },
+        {
+          strokeDashoffset: 0,
+          delay: 0.7,
+          duration: 0.7,
+          ease: 'power2.inOut',
+        },
+      );
+    };
+
+    if (animated) animate();
+  }, []);
+
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="247"
+      height="246"
+      viewBox="0 0 247 246"
+      fill="none"
+      {...props}
+    >
+      <circle
+        cx="123.5"
+        cy="123"
+        r="105.125"
+        stroke="#0A1ED9"
+        strokeWidth="5"
+        ref={circleRef}
+      />
+      <path
+        d="M77.375 115.312L112.856 153.75L169.625 92.25"
+        ref={lineRef}
+        stroke="#0A1ED9"
+        strokeWidth="5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+};

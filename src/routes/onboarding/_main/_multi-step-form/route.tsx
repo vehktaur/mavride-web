@@ -8,78 +8,77 @@ import {
 } from '@tanstack/react-router';
 import { AnimatePresence, motion } from 'motion/react';
 import { useForm } from 'react-hook-form';
-import { useRef } from 'react';
+import { onboardingProfileSteps as steps } from '@/lib/constants';
+import useOnboardingStore from '@/stores/onboarding';
+import { useShallow } from 'zustand/react/shallow';
+import { getMultiStepSchema } from '@/lib/schemas';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { useState } from 'react';
+import SuccessModal from '@/components/ui/success-modal';
 
 export const Route = createFileRoute('/onboarding/_main/_multi-step-form')({
   component: OnboardingStepForm,
 });
 
-const steps = [
-  {
-    id: '/onboarding/personal-information',
-    heading: 'Personal Information',
-    subheading: `Create an account with us and complete verification to get started`,
-  },
-  {
-    id: '/onboarding/location-details',
-    heading: 'Enter Location Details',
-    subheading: `Enter valid location details to complete registration`,
-  },
-  {
-    id: '/onboarding/company-details',
-    heading: 'Company Details',
-    subheading: `Enter valid company details to complete registration`,
-  },
-  {
-    id: '/onboarding/certifications',
-    heading: 'Upload Valid Certification',
-    subheading: 'Upload valid certifications for verification',
-  },
-] as const;
-
 function OnboardingStepForm() {
+  const [success, setSuccess] = useState(false);
   const pathname = useLocation({
     select: (location) => location.pathname,
   });
   const navigate = useNavigate();
   const stepIndex = steps.findIndex((step) => pathname.includes(step.id));
+  const isLastStep = stepIndex === steps.length - 1;
 
-  // Track direction
-  const prevStepIndex = useRef(stepIndex);
-  const direction = stepIndex > prevStepIndex.current ? 1 : -1;
-  prevStepIndex.current = stepIndex == 0 ? -1 : stepIndex - 1;
+  // Store
+  const defaultValues = useOnboardingStore(
+    useShallow((state) => {
+      const { setData, clearData, ...formState } = state;
+      return formState;
+    }),
+  );
+  const setData = useOnboardingStore((state) => state.setData);
 
   // Form
-  const methods = useForm();
+  const schema = getMultiStepSchema(steps[stepIndex].id);
+  type FormData = z.infer<typeof schema>;
+  const methods = useForm<FormData>({
+    defaultValues,
+    resolver: zodResolver(schema),
+  });
   const onSubmit = methods.handleSubmit((data) => {
-    if (stepIndex !== steps.length - 1)
+    if (!isLastStep) {
+      setData(data);
       navigate({ to: steps[stepIndex + 1].id });
+      return;
+    }
 
-    console.log(data);
+    setSuccess(true);
   });
 
   return (
     <>
+      {success && (
+        <SuccessModal
+          message="Your registration was successful. Now, please log in with your email and password to get started"
+          to="/login"
+        />
+      )}
+
       <h1 className="onboarding-heading">{steps[stepIndex].heading}</h1>
-      <p className="text-grey-600 clamp-[text,base,lg] mb-8">
+      <p className="text-grey-600 fl-text-base/lg mb-8">
         {steps[stepIndex].subheading}
       </p>
 
       <Form methods={methods} onSubmit={onSubmit}>
         <AnimatePresence mode="wait">
-          <motion.div
-            key={pathname}
-            initial={{ x: `${70 * direction}%`, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: `${-70 * direction}%`, opacity: 0 }}
-            className="grid gap-5"
-          >
+          <motion.div key={pathname} className="grid gap-5">
             <Outlet />
           </motion.div>
         </AnimatePresence>
 
         <Button size="lg" type="submit" className="mt-14">
-          Proceed
+          {isLastStep ? 'Next' : 'Proceed'}
         </Button>
       </Form>
     </>

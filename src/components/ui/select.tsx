@@ -6,6 +6,8 @@ import { cn } from '@/lib/utils';
 import type { SelectOption, SelectProps } from '@/types';
 import { Controller } from 'react-hook-form';
 import RequiredMark from './required-mark';
+import { LuInbox } from 'react-icons/lu';
+import FormErrorMessage from '../form/error-message';
 
 function Select({
   ...props
@@ -38,18 +40,18 @@ function SelectTrigger({
       data-slot="select-trigger"
       data-size={size}
       className={cn(
-        "flex w-full items-center justify-between gap-2 px-3 py-2 text-sm whitespace-nowrap transition-[color,box-shadow] disabled:cursor-not-allowed disabled:opacity-50 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+        "flex w-full items-center justify-between gap-2 px-3 py-2 text-sm whitespace-nowrap transition-[color,box-shadow] disabled:cursor-not-allowed disabled:opacity-50 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-placeholder:text-grey-200",
 
         'rounded-mxl outline border-none bg-grey-100 hover:ring ring-primary focus:ring active:ring transition-colors duration-300',
-        'data-[size=default]:clamp-[px,3.5,4] data-[size=default]:clamp-[py,2,2.5] data-[size=default]:clamp-[text,sm,base]',
-        'data-[size=sm]:clamp-[px,3,3.5] data-[size=sm]:clamp-[py,1.5,2] text-sm',
+        'data-[size=default]:fl-px-3.5/4 data-[size=default]:fl-py-2/2.5 data-[size=default]:fl-text-sm/base',
+        'data-[size=sm]:fl-px-3/3.5 data-[size=sm]:fl-py-1.5/2 text-sm',
         className,
       )}
       {...props}
     >
       {children}
       <SelectPrimitive.Icon asChild>
-        <ChevronDownIcon className="size-4 opacity-50" />
+        <ChevronDownIcon className="size-4 text-black" />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   );
@@ -114,7 +116,7 @@ function SelectItem({
     <SelectPrimitive.Item
       data-slot="select-item"
       className={cn(
-        "focus:bg-accent focus:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground relative flex w-full cursor-default items-center gap-2 rounded-sm clamp-[py,1.5,2] px-2 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
+        "focus:bg-accent focus:text-accent-foreground [&_svg:not([class*='text-'])]:text-muted-foreground relative flex w-full cursor-default items-center gap-2 rounded-sm fl-py-1.5/2 px-2 text-sm outline-hidden select-none data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
         className,
       )}
       {...props}
@@ -190,12 +192,27 @@ function FormSelect({
   required = true,
   size,
   position = 'popper',
+  emptyPlaceholder = 'No options available',
+  onChange,
 }: SelectProps) {
   return (
     <Controller
       name={name}
-      render={({ field: { value, onChange } }) => {
+      render={({ field: { value, onChange: _onChange } }) => {
         const renderOptions = () => {
+          if (!options || options.length === 0) {
+            return (
+              <SelectItem
+                value="empty"
+                disabled
+                className="py-4 text-center flex-col items-center justify-center"
+              >
+                <LuInbox className="size-6 opacity-50" />
+                {emptyPlaceholder}
+              </SelectItem>
+            );
+          }
+
           return options.map((option, index) => {
             // If option has items, render as a group
             if (option.items && option.items.length > 0) {
@@ -240,7 +257,13 @@ function FormSelect({
               </label>
             )}
 
-            <Select value={value} onValueChange={onChange}>
+            <Select
+              value={value}
+              onValueChange={(v) => {
+                _onChange(v);
+                onChange?.(v);
+              }}
+            >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder={placeholder} />
               </SelectTrigger>
@@ -248,6 +271,8 @@ function FormSelect({
                 {renderOptions()}
               </SelectContent>
             </Select>
+
+            <FormErrorMessage name={name} id={`${name}-error-message`} />
           </div>
         );
       }}

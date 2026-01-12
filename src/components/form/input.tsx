@@ -18,12 +18,14 @@ const Input = ({
   afterEl,
   size = 'lg',
   required = true,
+  controlled = false,
   ...props
 }: InputProps) => {
   const id = useId();
 
-  const { register } = useFormContext();
-  const { errors } = useFormState({ name });
+  const formContext = useFormContext();
+  const { register } = formContext || {};
+  const { errors } = useFormState({ name }) || {};
 
   const [currentType, setCurrentType] = useState(type);
   const togglePassword = () => {
@@ -70,16 +72,15 @@ const Input = ({
               'ps-11': prefix,
               'pe-11': suffix || type === 'password',
               'rounded-r-none': afterEl,
-              'clamp-[px,3.5,4] clamp-[py,2,2.5] clamp-[text,sm,base]':
-                size === 'lg',
-              'clamp-[px,3,3.5] clamp-[py,1.5,2] text-sm': size === 'md',
-              'clamp-[px,2.5,3] clamp-[py,1,1.5] text-sm': size === 'sm',
+              'fl-px-3.5/4 fl-py-2/2.5 fl-text-sm/base': size === 'lg',
+              'fl-px-3/3.5 fl-py-1.5/2 text-sm': size === 'md',
+              'fl-px-2.5/3 fl-py-1/1.5 text-sm': size === 'sm',
             },
             classNames?.input,
           )}
           id={id}
           type={currentType}
-          {...register(name)}
+          {...(controlled || !register ? {} : register(name))}
           aria-describedby={id}
           {...props}
         />
@@ -97,7 +98,7 @@ const Input = ({
           >
             {type === 'password' ? (
               <button
-                className="*:clamp-[size,4,5] block"
+                className="*:fl-size-4/5 block"
                 type="button"
                 onClick={togglePassword}
               >
@@ -112,7 +113,7 @@ const Input = ({
         {afterEl && (
           <div
             className={cn(
-              'clamp-[my,-0.8px,-1px] border-input bg-lavender-mist flex w-[2.94rem] items-center justify-center rounded-r-lg border border-l-0',
+              'neg-fl-my-0.8px/-1px border-input bg-lavender-mist flex w-[2.94rem] items-center justify-center rounded-r-lg border border-l-0',
               classNames?.afterEl,
             )}
           >

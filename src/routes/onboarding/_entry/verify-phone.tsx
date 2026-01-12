@@ -1,16 +1,16 @@
-import Form from '@/components/form'
-import Input from '@/components/form/input'
-import { verifyPhoneSchema } from '@/lib/schemas'
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useState, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Button } from '@/components/ui/button'
-import { AppInputOtp } from '@/components/form/input-otp'
+import Form from '@/components/form';
+import Input from '@/components/form/input';
+import { verifyPhoneSchema } from '@/lib/schemas';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@/components/ui/button';
+import { AppInputOtp } from '@/components/form/input-otp';
 
 export const Route = createFileRoute('/onboarding/_entry/verify-phone')({
   component: VerifyPhonePage,
-})
+});
 
 const steps = [
   {
@@ -23,32 +23,32 @@ const steps = [
     title: 'OTP',
     submitText: 'Verify',
   },
-]
+];
 
 function VerifyPhonePage() {
-  const [step, setStep] = useState(0)
-  const [success, setSuccess] = useState(false)
-  const navigate = useNavigate()
-  const schema = verifyPhoneSchema(step)
+  const [step, setStep] = useState(0);
+  const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
+  const schema = verifyPhoneSchema(step);
   const methods = useForm({
     resolver: zodResolver(schema),
     mode: 'onSubmit',
-  })
+  });
 
   const onSubmit = methods.handleSubmit((data) => {
     if (step === 0) {
-      setStep(1)
-      return
+      setStep(1);
+      return;
     }
-    console.log(data)
-    setSuccess(true)
-  })
+    console.log(data);
+    setSuccess(true);
+  });
 
   return (
     <>
       <div className="text-center">
         <h2 className="mb-1 onboarding-heading">Enter {steps[step].title}</h2>
-        <p className="text-grey-400 clamp-[text,sm,lg]">
+        <p className="text-grey-400 fl-text-sm/lg">
           We will send an OTP to the number <br />
         </p>
       </div>
@@ -86,24 +86,24 @@ function VerifyPhonePage() {
         )}
       </Form>
     </>
-  )
+  );
 }
 
 function Countdown({ success }: { success: boolean }) {
-  const [countdown, setCountdown] = useState(30)
+  const [countdown, setCountdown] = useState(30);
   useEffect(() => {
     if (countdown > 0) {
       const timer = setInterval(() => {
-        setCountdown((prev) => prev - 1)
-      }, 1000)
-      return () => clearInterval(timer)
+        setCountdown((prev) => prev - 1);
+      }, 1000);
+      return () => clearInterval(timer);
     }
-  }, [countdown])
+  }, [countdown]);
 
   const handleResend = () => {
-    setCountdown(30)
+    setCountdown(30);
     // Add your resend OTP logic here
-  }
+  };
 
   return (
     <p className="text-sm mt-4">
@@ -129,5 +129,5 @@ function Countdown({ success }: { success: boolean }) {
         </>
       )}
     </p>
-  )
+  );
 }

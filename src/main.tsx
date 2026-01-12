@@ -1,20 +1,22 @@
-import { StrictMode } from 'react'
-import ReactDOM from 'react-dom/client'
-import { RouterProvider, createRouter } from '@tanstack/react-router'
-import { routeTree } from './routeTree.gen.ts'
-import * as TanStackQueryProvider from './integrations/tanstack-query/root-provider.tsx'
+import { StrictMode } from 'react';
+import ReactDOM from 'react-dom/client';
+import { RouterProvider, createRouter } from '@tanstack/react-router';
+import { routeTree } from './routeTree.gen.ts';
+import { gsap } from 'gsap';
+import { useGSAP } from '@gsap/react';
+import * as TanStackQueryProvider from './integrations/tanstack-query/root-provider.tsx';
 
 // Import the generated route tree
 
-import './styles.css'
-import 'swiper/css'
-import 'swiper/css/pagination'
-import 'swiper/css/autoplay'
-import 'react-image-crop/dist/ReactCrop.css'
+import './styles.css';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/autoplay';
+
+gsap.registerPlugin(useGSAP);
 
 // Create a new router instance
-
-const TanStackQueryProviderContext = TanStackQueryProvider.getContext()
+const TanStackQueryProviderContext = TanStackQueryProvider.getContext();
 const router = createRouter({
   routeTree,
   context: {
@@ -24,24 +26,24 @@ const router = createRouter({
   scrollRestoration: true,
   defaultStructuralSharing: true,
   defaultPreloadStaleTime: 0,
-})
+});
 
 // Register the router instance for type safety
 declare module '@tanstack/react-router' {
   interface Register {
-    router: typeof router
+    router: typeof router;
   }
 }
 
 // Render the app
-const rootElement = document.getElementById('app')
+const rootElement = document.getElementById('app');
 if (rootElement && !rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement)
+  const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
       <TanStackQueryProvider.Provider {...TanStackQueryProviderContext}>
         <RouterProvider router={router} />
       </TanStackQueryProvider.Provider>
     </StrictMode>,
-  )
+  );
 }
