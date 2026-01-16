@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as SelectPrimitive from '@radix-ui/react-select';
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from 'lucide-react';
+import { CheckIcon, ChevronUpIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import type { SelectOption, SelectProps } from '@/types';
@@ -8,6 +8,7 @@ import { Controller } from 'react-hook-form';
 import RequiredMark from './required-mark';
 import { LuInbox } from 'react-icons/lu';
 import FormErrorMessage from '../form/error-message';
+import { ChevronRightIcon } from '@/assets/icons';
 
 function Select({
   ...props
@@ -51,7 +52,7 @@ function SelectTrigger({
     >
       {children}
       <SelectPrimitive.Icon asChild>
-        <ChevronDownIcon className="size-4 text-black" />
+        <ChevronRightIcon className="size-4 text-black rotate-90" />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   );
@@ -178,7 +179,7 @@ function SelectScrollDownButton({
       )}
       {...props}
     >
-      <ChevronDownIcon className="size-4" />
+      <ChevronRightIcon className="size-4 rotate-90" />
     </SelectPrimitive.ScrollDownButton>
   );
 }

@@ -9,7 +9,7 @@ import {
 import { AnimatePresence, motion } from 'motion/react';
 import { useForm } from 'react-hook-form';
 import { onboardingProfileSteps as steps } from '@/lib/constants';
-import useOnboardingStore from '@/stores/onboarding';
+import { useOnboardingStore } from '@/stores';
 import { useShallow } from 'zustand/react/shallow';
 import { getMultiStepSchema } from '@/lib/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';

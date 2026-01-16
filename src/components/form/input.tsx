@@ -54,7 +54,7 @@ const Input = ({
             className={cn(
               'absolute top-0 left-4 h-full content-center text-[#8E8E8E]',
               {
-                'text-error-red': errors?.[name]?.message,
+                'text-error': errors?.[name]?.message,
               },
               classNames?.prefix,
             )}
@@ -68,7 +68,7 @@ const Input = ({
           className={cn(
             'w-full rounded-mxl outline border-none bg-grey-100 hover:ring ring-primary focus:ring active:ring transition-colors duration-300',
             {
-              'ring-error-red ring': errors?.[name],
+              'ring-error ring': errors?.[name],
               'ps-11': prefix,
               'pe-11': suffix || type === 'password',
               'rounded-r-none': afterEl,
@@ -91,7 +91,7 @@ const Input = ({
             className={cn(
               'absolute top-0 right-4 h-full content-center text-[#8E8E8E]',
               {
-                'text-error-red': errors?.[name],
+                'text-error': errors?.[name],
               },
               classNames?.suffix,
             )}

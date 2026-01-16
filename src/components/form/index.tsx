@@ -1,9 +1,9 @@
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 import {
   FormProvider,
   type UseFormReturn,
   type FieldValues,
-} from 'react-hook-form'
+} from 'react-hook-form';
 
 const Form = <T extends FieldValues>({
   methods,
@@ -11,10 +11,10 @@ const Form = <T extends FieldValues>({
   className,
   onSubmit,
 }: {
-  methods: UseFormReturn<T>
-  children: React.ReactNode
-  className?: string
-  onSubmit?: React.FormEventHandler<HTMLFormElement>
+  methods: UseFormReturn<T>;
+  children: React.ReactNode;
+  className?: string;
+  onSubmit?: React.FormEventHandler<HTMLFormElement>;
 }) => {
   return (
     <FormProvider {...methods}>
@@ -22,6 +22,6 @@ const Form = <T extends FieldValues>({
         {children}
       </form>
     </FormProvider>
-  )
-}
-export default Form
+  );
+};
+export default Form;

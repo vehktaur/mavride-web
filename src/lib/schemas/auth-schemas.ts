@@ -1,6 +1,9 @@
 import * as z from 'zod';
+import { PHONE_REGEX } from '../regex';
 
 export const loginSchema = z.object({
-  email: z.email({ error: 'Please enter a valid email address' }),
+  phone_number: z.string().regex(PHONE_REGEX, {
+    error: 'Please enter the full number including the area code',
+  }),
   password: z.string().min(1, { error: 'Password is required' }),
 });

@@ -5,7 +5,7 @@ import { PASSWORD_REGEX, PHONE_REGEX } from '../regex';
 export const verifyPhoneSchema = (step: number) =>
   step === 0
     ? z.object({
-        phone: z.string().regex(PHONE_REGEX, {
+        phone_number: z.string().regex(PHONE_REGEX, {
           error: 'Please enter the full number including the area code',
         }),
       })

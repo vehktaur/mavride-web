@@ -61,7 +61,7 @@ function VerifyPhonePage() {
         {step === 0 ? (
           <Input
             label="Phone Number"
-            name="phone"
+            name="phone_number"
             type="tel"
             placeholder="Enter Phone Number"
           />

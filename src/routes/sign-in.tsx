@@ -28,10 +28,10 @@ function SignInPage() {
       <Form methods={methods} onSubmit={onSubmit}>
         <div className="grid gap-4 mb-7.25">
           <Input
-            name="email"
-            label="Email"
-            type="email"
-            placeholder="Example@gmail.com"
+            name="phone_number"
+            label="Phone Number"
+            type="tel"
+            placeholder="Phone Number"
           />
           <Input
             name="password"

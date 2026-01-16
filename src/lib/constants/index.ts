@@ -108,3 +108,5 @@ export const onboardingRoutes = [
   'onboarding/profile-picture',
   ...onboardingProfileSteps.map((step) => step.id),
 ] as const;
+
+export * from './filters';

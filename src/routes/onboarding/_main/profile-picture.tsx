@@ -6,7 +6,7 @@ import { useForm, useFormState } from 'react-hook-form';
 import * as z from 'zod';
 import { profilePicSchema as schema } from '@/lib/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import useOnboardingStore from '@/stores/onboarding';
+import { useOnboardingStore } from '@/stores';
 
 export const Route = createFileRoute('/onboarding/_main/profile-picture')({
   component: ChooseProfilePic,

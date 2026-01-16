@@ -1,8 +1,4 @@
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'fluid-tailwindcss/tailwind-merge';
-import type { RcFile } from 'antd/es/upload';
-
-export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs));
+import type { RcFile } from "antd/es/upload";
 
 export const getBase64ForUpload = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {

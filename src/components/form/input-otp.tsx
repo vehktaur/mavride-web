@@ -52,7 +52,7 @@ function InputOTPSlot({
       data-active={isActive}
       className={cn(
         'data-active:ring-primary dark:data-[active=true]:aria-invalid:ring-destructive/40 aria-invalid:ring-destructive data-[active=true]:aria-invalid:ring-destructive dark:bg-input/30 relative flex size-16 font-medium fl-text-base/lg items-center justify-center bg-grey-100 transition-all outline-none rounded-mxl ring-primary data-[active=true]:z-10 data-[active=true]:ring-1',
-        'data-error:ring-error-red',
+        'data-error:ring-error',
         className,
         Boolean(char) && 'ring-1',
       )}

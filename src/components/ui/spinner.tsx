@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
 const Spinner = ({ className }: { className?: string }) => {
   return (
@@ -9,6 +9,6 @@ const Spinner = ({ className }: { className?: string }) => {
       )}
       role="status"
     />
-  )
-}
-export default Spinner
+  );
+};
+export default Spinner;

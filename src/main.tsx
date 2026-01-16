@@ -12,6 +12,8 @@ import './styles.css';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/autoplay';
+import useAuthStore from './stores/auth-store.ts';
+import { useShallow } from 'zustand/react/shallow';
 
 gsap.registerPlugin(useGSAP);
 
@@ -21,6 +23,7 @@ const router = createRouter({
   routeTree,
   context: {
     ...TanStackQueryProviderContext,
+    auth: undefined!,
   },
   defaultPreload: 'intent',
   scrollRestoration: true,
@@ -35,6 +38,16 @@ declare module '@tanstack/react-router' {
   }
 }
 
+function App() {
+  const auth = useAuthStore(
+    useShallow((state) => ({
+      isAuthenticated: state.isAuthenticated,
+      user: state.user,
+    })),
+  );
+  return <RouterProvider router={router} context={{ auth }} />;
+}
+
 // Render the app
 const rootElement = document.getElementById('app');
 if (rootElement && !rootElement.innerHTML) {
@@ -42,7 +55,7 @@ if (rootElement && !rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <TanStackQueryProvider.Provider {...TanStackQueryProviderContext}>
-        <RouterProvider router={router} />
+        <App />
       </TanStackQueryProvider.Provider>
     </StrictMode>,
   );
